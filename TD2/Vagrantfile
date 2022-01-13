@@ -1,0 +1,15 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.network :forwarded_port, guest: 80, host: 8088
+  config.vm.network :forwarded_port, guest: 3306, host: 3306
+  config.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+
+  # Synced folders (host, guest) - Examples
+  #  config.vm.synced_folder "../Mixtes/", "/home/vagrant/Mixtes"
+  #  config.vm.synced_folder "../Apprentis/", "/home/vagrant/Apprentis"
+
+  #Provisionning
+  config.vm.provision :shell, :path => "bootstrap.sh"
+end
