@@ -1,0 +1,20 @@
+Vagrant.configure(2) do |config|
+  # Quelle image de base pre-packagee utiliser ?
+  config.vm.box = "bento/ubuntu-20.04"
+
+  # Redirection de ports entre la VM et l'OS hote. On peut en faire plusieurs
+  config.vm.network :forwarded_port, guest: 80, host: 8088
+
+  # Synchronisation de repertoires entre l'hote et la VM. On peut en faire plusieurs
+  # provisioning/web est sur l'hôte (chemin relatif) ; /provisioning/web est dans la VM
+  # web.vm.synced_folder "provisioning/web", "/provisioning/web"
+
+  # Configuration de la VM : specifier le provider de l'hyperviseur
+  config.vm.provider :virtualbox do |vb|
+    #Indiquer la taille memoire allouee a la VM
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+
+  # Specifier le provisioning (un script shell ou un outil d'IaC)
+  config.vm.provision :shell, :path => "bootstrap.sh"
+end
